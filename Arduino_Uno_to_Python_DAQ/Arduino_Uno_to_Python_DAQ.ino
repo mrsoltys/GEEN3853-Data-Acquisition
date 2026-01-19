@@ -11,7 +11,7 @@
 */
 
 const uint8_t  ANALOG_PIN = A0;
-const uint16_t RATE_HZ    = 1000;                 // target sample rate (Hz)
+const uint16_t RATE_HZ    = 5000;                 // target sample rate (Hz)
 const uint32_t DT_US      = 1000000UL / RATE_HZ; // sampling interval (microseconds)
 
 uint32_t last_us = 0;
