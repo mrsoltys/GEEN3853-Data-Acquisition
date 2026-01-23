@@ -11,7 +11,7 @@
 */
 
 const uint8_t  ANALOG_PIN = A0;
-const uint16_t RATE_HZ    = 5000;                 // target sample rate (Hz)
+const uint16_t RATE_HZ    = 500;                 // target sample rate (Hz)
 const uint32_t DT_US      = 1000000UL / RATE_HZ; // sampling interval (microseconds)
 
 uint32_t last_us = 0;
@@ -48,13 +48,15 @@ void loop() {
     //Read data first
     const uint16_t raw = analogRead(ANALOG_PIN); // 10-bit ADC: 0..1023
 
-    // Schedule next call. You could also use last_us = now_us, but this 
-    // "Catch up" scheduling will try to correct for drift if loop timing slips.
-    last_us += DT_US;
-
+    //Print Data
     Serial.print(now_us);
     Serial.print(',');
     Serial.println(raw);
+
+    // Schedule next call. You could also use last_us = now_us, but this 
+    // "Catch up" scheduling will try to correct for drift if loop timing slips.
+    last_us += DT_US;
+    
     /*
     NOTE ON TEXT VS. BINARY SERIAL TRANSFER
 
