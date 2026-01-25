@@ -1,24 +1,36 @@
 /*
-  Arduino Uno DAQ: stream analog pin A0 over Serial as CSV lines.
+  Arduino Uno DAQ (A0) — command-triggered CSV streaming
 
-  Output format:
-    us,raw
+  Command:
+    START,<rate_hz>,<n_samples>
+
+  Output:
+    READY
+    arduino_us,raw
     <micros>,<0..1023>
+    ...
+    DONE
 
   Notes:
   - This sketch is optimized for simplicity and robustness using ASCII CSV.
   - For much higher rates, consider: higher baud or binary packets.
+  
 */
 
-const uint8_t  ANALOG_PIN = A0;
-const uint16_t RATE_HZ    = 500;                 // target sample rate (Hz)
-const uint32_t DT_US      = 1000000UL / RATE_HZ; // sampling interval (microseconds)
+const int ADC_PIN = A0;
 
-uint32_t last_us = 0;
+unsigned long sample_interval_us = 2000; // default 500 Hz
+unsigned long n_samples = 0;
+
+bool running = false;
+unsigned long last_us = 0;
+unsigned long sent = 0;
 
 void setup() {
   Serial.begin(115200);
-  /*
+  delay(50);
+  Serial.println("READY");
+    /*
     NOTE: Serial speed will limit data transfer rates. Higher baud rates may
     introduce data corruption depending on USB cable, drivers, and host system.
 
@@ -33,30 +45,55 @@ void setup() {
     In practice, stable rates are typically somewhat lower.
   */
 
-  // Optional: brief delay so the host can connect after reset
-  delay(500);
-
-  Serial.println("us,raw"); // CSV header
-  last_us = micros();       // initialize scheduler reference
 }
 
 void loop() {
-  const uint32_t now_us = micros();  //Check current time
-
-  // Use signed subtraction to handle micros() rollover safely.
-  if ((int32_t)(now_us - last_us) >= (int32_t)DT_US) {
-    //Read data first
-    const uint16_t raw = analogRead(ANALOG_PIN); // 10-bit ADC: 0..1023
-
-    //Print Data
-    Serial.print(now_us);
-    Serial.print(',');
-    Serial.println(raw);
-
-    // Schedule next call. You could also use last_us = now_us, but this 
-    // "Catch up" scheduling will try to correct for drift if loop timing slips.
-    last_us += DT_US;
+  // --- Listen for command ---
+  // Command is of form: "Start,Rate[Hz],N Samples"
+  if (!running && Serial.available()) {
+    String cmd = Serial.readStringUntil('\n');
+    cmd.trim();
     
+    if (cmd.startsWith("START")) {
+      // parse: START,rate,n
+      int c1 = cmd.indexOf(',');
+      int c2 = cmd.indexOf(',', c1 + 1);
+      if (c1 > 0 && c2 > c1) {
+        long rate_hz = cmd.substring(c1 + 1, c2).toInt();
+        long n = cmd.substring(c2 + 1).toInt();
+        if (rate_hz > 0 && n > 0) {
+          sample_interval_us = (unsigned long)(1000000L / rate_hz);
+          n_samples = (unsigned long)n;
+          running = true;
+          sent = 0;
+          last_us = micros();
+          Serial.println("arduino_us,raw");
+        }
+      }
+    }
+  }
+
+  // --- Sample loop (hardware paced by micros timing) ---
+  if (running) {
+    unsigned long now = micros();
+    if ((unsigned long)(now - last_us) >= sample_interval_us) {
+      int raw = analogRead(ADC_PIN);
+      last_us += sample_interval_us; // keeps cadence stable
+      Serial.print(now);
+      Serial.print(",");
+      Serial.println(raw);
+
+      sent++;
+      if (sent >= n_samples) {
+        running = false;
+        Serial.println("DONE");
+      }
+    }
+  }
+}
+
+
+  
     /*
     NOTE ON TEXT VS. BINARY SERIAL TRANSFER
 
@@ -85,5 +122,4 @@ void loop() {
     Best practice: use text for learning and moderate data rates; use binary
     only when higher sample rates are required.
   */
-  }
-}
+  
