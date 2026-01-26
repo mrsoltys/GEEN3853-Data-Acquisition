@@ -77,11 +77,11 @@ void loop() {
   if (running) {
     unsigned long now = micros();
     if ((unsigned long)(now - last_us) >= sample_interval_us) {
-      int raw = analogRead(ADC_PIN);
+      int raw1 = analogRead(ADC_PIN);
       last_us += sample_interval_us; // keeps cadence stable
       Serial.print(now);
       Serial.print(",");
-      Serial.println(raw);
+      Serial.println(raw1);
 
       sent++;
       if (sent >= n_samples) {
