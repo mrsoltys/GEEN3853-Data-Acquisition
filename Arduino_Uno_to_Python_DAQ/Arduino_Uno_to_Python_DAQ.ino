@@ -53,8 +53,10 @@ void loop() {
   if (!running && Serial.available()) {
     String cmd = Serial.readStringUntil('\n');
     cmd.trim();
+    cmd.toLowerCase();  //convert to lower case
+    cmd.replace(" ","");//Remove internal spaces
     
-    if (cmd.startsWith("START")) {
+    if (cmd.startsWith("start")) {
       // parse: START,rate,n
       int c1 = cmd.indexOf(',');
       int c2 = cmd.indexOf(',', c1 + 1);
