@@ -5,12 +5,10 @@ This folder contains simple Python scripts for:
 -   ✅ Live time-domain plotting\
 -   ✅ Live time + FFT plotting\
 -   ✅ Optional CSV export\
--   ✅ Clean, minimal code for teaching data acquisition
 
 These scripts are designed to run in **Spyder** using **Anaconda**.
 
 ------------------------------------------------------------------------
-
 # 🚀 Workflow
 
 ## 1️⃣ Launch Spyder
@@ -49,10 +47,6 @@ You can either:
 
 -   Download the script from GitHub and open it in Spyder\
 -   Or copy/paste the script directly into a new `.py` file
-
-Recommended filename:
-
-    ni_usb6002_live.py
 
 ------------------------------------------------------------------------
 
@@ -175,27 +169,6 @@ This converts the script from:
 Remember:
 
 Fmax = Fs / 2 (Nyquist limit)
-
-------------------------------------------------------------------------
-
-# 🧠 Teaching Notes
-
-This script demonstrates:
-
--   Continuous sampling
--   Rolling time buffers
--   Real-time visualization
--   FFT using `numpy.fft.rfft`
--   Windowing (Hann)
--   DC removal
--   CSV logging
--   Proper NI-DAQ task structure
-
-The code is intentionally written:
-
--   Without functions\
--   With minimal abstraction\
--   To be readable by students
 
 ------------------------------------------------------------------------
 
