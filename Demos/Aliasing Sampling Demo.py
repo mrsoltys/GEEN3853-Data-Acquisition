@@ -10,7 +10,7 @@ f0 = 440.0               # True sine frequency (Hz)
 duration_s = 2         # seconds to generate/play
 
 fs_play = 44100          # High-rate playback/sample grid for plotting + audio
-fs_sample = 600          # Sampling rate to test (try: 800, 801, 880, 1000, 2000)
+fs_sample = 1000          # Sampling rate to test (try: 800, 801, 880, 1000, 2000)
 
 plot_window_ms = 40      # plot window (10–50 ms)
 A = 0.9                  # amplitude (<1)

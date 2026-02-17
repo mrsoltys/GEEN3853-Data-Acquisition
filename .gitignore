@@ -5,3 +5,6 @@ Arduino_Uno_to_Python_DAQ/.DS_Store
 .DS_Store
 *.csv
 .DS_Store
+Demos/tone_alias.wav
+Demos/tone_linear.wav
+Demos/tone_true.wav
