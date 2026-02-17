@@ -203,6 +203,10 @@ AIx+ and AIx-
 -   NI-DAQmx driver installed
 -   `nidaqmx` Python package installed
 
+Install ni drivers from here:
+
+    https://www.ni.com/en/support/downloads/drivers/download.ni-daq-mx.html?srsltid=AfmBOopxvpOHOcpzqgSUf32mAWlnCs0JzRUo3UBOrM7SmIc-P_oLavg5#585854
+    
 Install nidaqmx via:
 
     pip install nidaqmx
