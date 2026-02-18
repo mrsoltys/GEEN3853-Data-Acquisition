@@ -1,7 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import soundfile as sf
-import subprocess
+import subprocess #mac only
+#import winsound #windows only
 
 # =========================
 # KNOBS
@@ -113,13 +114,16 @@ sf.write(wav_linear, x_linear, fs_play)
 sf.write(wav_alias, x_alias, fs_play)
 
 print("\nPlaying TRUE tone (clean)...")
-subprocess.run(["afplay", wav_true], check=True)
+subprocess.run(["afplay", wav_true], check=True) #Mac Only
+#winsound.PlaySound(wav_true,winsound.SND_FILENAME) #Windows Only
 
 print("Playing LINEAR reconstruction tone (peaky/polygon-ish at low fs)...")
 subprocess.run(["afplay", wav_linear], check=True)
+#winsound.PlaySound(wav_linear,winsound.SND_FILENAME) #Windows Only
 
 print("Playing ALIAS sine tone (predicted pitch)...")
 subprocess.run(["afplay", wav_alias], check=True)
+#winsound.PlaySound(wav_alias,winsound.SND_FILENAME) #Windows Only
 
 print("\nFiles written:")
 print(" -", wav_true)

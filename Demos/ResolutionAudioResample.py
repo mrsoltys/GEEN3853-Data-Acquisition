@@ -3,6 +3,7 @@ import librosa
 import soundfile as sf
 import matplotlib.pyplot as plt
 import subprocess
+#import winsound #windows only
 
 # =========================
 # KNOBS (edit these)
@@ -94,4 +95,5 @@ sf.write(out_wav, xq, fs0)
 print(f"\nWrote {out_wav} with simulated resolution = {bits}-bit.")
 print(f"Playback is the {seconds_to_use}s segment starting at {sample_start_s}s.")
 print("Playing...")
-subprocess.run(["afplay", out_wav], check=True)
+subprocess.run(["afplay", out_wav], check=True)#Mac Only
+#winsound.PlaySound(out_wav,winsound.SND_FILENAME) #Windows Only

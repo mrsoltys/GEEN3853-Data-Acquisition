@@ -21,7 +21,7 @@ print(df.head())
 
 # ---- Column mapping ----
 # Preferred schema from the aligned DAQ notebooks:
-TIME_COL = 'time_s'
+TIME_COL = 't_s'
 SIG_COL  = 'ch0_V'
 
 # If needed, map alternative column names here:
