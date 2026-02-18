@@ -8,3 +8,4 @@ Arduino_Uno_to_Python_DAQ/.DS_Store
 Demos/tone_alias.wav
 Demos/tone_linear.wav
 Demos/tone_true.wav
+*.mp3
