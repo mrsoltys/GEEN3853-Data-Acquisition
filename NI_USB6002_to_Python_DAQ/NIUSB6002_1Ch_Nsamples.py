@@ -54,7 +54,7 @@ with nidaqmx.Task() as task:
 
     y = task.read(
         number_of_samples_per_channel=N_SAMPLES,
-        timeout=5.0,
+        timeout=N_SAMPLES/FS_HZ+5.0,
     )
 
 print("Acquisition complete.")
